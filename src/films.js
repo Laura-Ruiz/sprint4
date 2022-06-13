@@ -48,31 +48,6 @@ function orderAlphabetically(array) {
 }
 
 // Exercise 5: Order by year, ascending
-
-/* function orderByYear(array) {
-  
-  let result = [...array].sort((a, b) => {
-    // If year a is gratter than b
-    if (a.year > b.year)
-      return 1;
-    // If year b is gratter than b
-    if (a.year < b.year)
-      return -1;
-    // if year a ==  year b
-    if (a.title.toUpperCase() > b.title.toUpperCase())
-      return 1;
-    // If title b is gratter than b
-    if (a.title.toUpperCase() < b.title.toUpperCase())
-      return -1;
-    // If a == b
-    return 0;
-  });
-
-  return result
-} */
-
-//with localCompare 
-
 function orderByYear(array) {
   let result = [...array].sort((a, b) => {
     return (a.year - b.year) || (a.title.localeCompare(b.title))
@@ -81,20 +56,6 @@ function orderByYear(array) {
 }
 
 // Exercise 6: Calculate the average of the movies in a category
-/* function moviesAverageByCategory(movies, parameter) {
-  let filmsByGenre = [];
-  movies.forEach(function (movie) {
-    if (movie.genre.includes(parameter) && movie.score != '') {
-      filmsByGenre.push(movie);
-    }
-  });
-  
-  let result = moviesAverage(filmsByGenre);
-  return result;
-} */
-
-//with filter
-
 function moviesAverageByCategory(array, parameter) {
   let filmsByGenre = array.filter(movie =>
     movie.genre.includes(parameter) && movie.score != '');
@@ -104,38 +65,56 @@ function moviesAverageByCategory(array, parameter) {
 
 // Exercise 7: Modify the duration of movies to minutes
 function hoursToMinutes(array) {
+  let resultMovie;
 
-  let arrayMovies = [...array].map((movie) => {
-    getHours(movie.duration);
-    return movie
+  array.map(movie => {
+    resultMovie = getHours(movie.duration);
+
   });
 
-  console.log(arrayMovies);
+  return [{ ...array, duration: resultMovie }]
 }
-//return {...movie, duration: nuevo valor}
-//let saludo = "hola"; console.log([...saludo])
+
 function getHours(duration) {
 
-  //  let chars = []
-  //   for(let i= 0; i<movie.length; i++){
-  //     if(movie.duration.includes("h")){
-  //       chars = movie.duration.split();
-  //       console.log(chars);
-  //     }
-  //   }
+  if (duration == "") {
+    return 0;
+  }
 
-  let result = [...array].map(movie => {
-    if (movie.duration.includes("h")) {
-      return movie
-      //console.log(chars)
+  if (duration.includes("h")) {
+    let resultHoursToMin = parseInt(duration) * 60;
+
+    if (duration.includes("min")) {
+      let indexH = duration.indexOf("h");
+      let getMin = duration.slice(indexH + 1);
+
+      let minutes = parseInt(getMin);
+
+      let durationTotal = resultHoursToMin + minutes;
+      return durationTotal
+
+    } else {
+      return resultHoursToMin
     }
-  })
-  console.log(result);
-  return result;
-}
-// Exercise 8: Get the best film of a year
-function bestFilmOfYear() {
 
+  } else {
+    let minutes = parseInt(getMin);
+    return minutes
+
+  }
+
+}
+
+// Exercise 8: Get the best film of a year
+function bestFilmOfYear(array, year) {
+  let filmsByYear = array.filter(movie => movie.year == year);
+  console.log(filmsByYear);
+  let resultScore = filmsByYear.sort((a, b) => {
+    return (a.score - b.score)
+  }).reverse();
+  console.log(resultScore);
+
+  return [resultScore[0]];
 }
 
 
